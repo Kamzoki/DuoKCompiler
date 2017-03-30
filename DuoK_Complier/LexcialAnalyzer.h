@@ -17,10 +17,15 @@ enum class Keys {
 
 class Token {
 public:
+	Token(Keys key, std::string vlaue);
 	Keys m_Key;
 	std::string m_Value;
 };
 
+Token::Token(Keys key, std::string value) {
+	m_Key = key;
+	m_Value = value;
+}
 class LexcialAnalyzer
 {
 public:

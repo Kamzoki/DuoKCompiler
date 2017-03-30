@@ -54,6 +54,36 @@ LexcialAnalyzer::LexcialAnalyzer(){
 
 void LexcialAnalyzer::fn_GetKeyWords(std::string currentLine) const
 {
+	// Begins with _ or Letter .... No Speical character
+	
+	std::list <char> currentLexem;
+	if (currentLexem.size() > 0)
+	{
+		currentLexem.clear();
+	}
+
+	for (int i = 0; i < currentLine.length(); i++)
+	{
+		if (i == 0)
+		{
+			if (currentLine[i] == '_' || (currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <='Z'))
+			{
+				Token newToken(Keys::Identifier, );
+				AcceptedTokens.push_back ()
+			}
+			else
+			{
+				
+			}
+		}
+		else
+		{
+			if ((currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z') || (currentLine[i] >= '0' && currentLine[i] <='9'))
+			{
+				tokenTracker++;
+			}
+		}
+	}
 	return;
 }
 
