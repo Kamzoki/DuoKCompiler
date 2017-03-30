@@ -109,5 +109,15 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 
 void LexcialAnalyzer::CheckValidity() const
 {
+	if (RefusedTokens.size() != 0)
+	{
+		PrintLexError(RefusedTokens.front());
+	}
+	return;
+}
+
+void LexcialAnalyzer::PrintLexError(Token element) const
+{
+	std::cout << "Error! the lexeme " << element.m_Value<<" is invlid.\n";
 	return;
 }
