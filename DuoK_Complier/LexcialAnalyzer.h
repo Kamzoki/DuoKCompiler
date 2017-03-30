@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
+#include <iostream>
 
 enum class Keys {
 	Reserved,
@@ -39,6 +40,8 @@ public:
 	void fn_PrintAcceptedTokens() const;
 	// CheckValidity function checks if refused tokens list is clear ... else, it wil print out a lexical analyzer error.
 	void CheckValidity() const;
+	//PrintLexError print lexical analyser error message
+	void PrintLexError(Token element) const;
 
 private:
 	//Holds all predefines language reserved words

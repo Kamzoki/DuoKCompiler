@@ -49,7 +49,47 @@ LexcialAnalyzer::LexcialAnalyzer(){
 	// TODO add all operators and make sure their keys are Operator
 	KeyWords[10].m_Key = Keys::Operator;
 	KeyWords[10].m_Value = "+";
-	return;
+
+	KeyWords[11].m_Key = Keys::Operator;
+	KeyWords[11].m_Value = "-";
+
+	KeyWords[12].m_Key = Keys::Operator;
+	KeyWords[12].m_Value = "*";
+
+	KeyWords[13].m_Key = Keys::Operator;
+	KeyWords[13].m_Value = "/";
+
+	KeyWords[14].m_Key = Keys::Operator;
+	KeyWords[14].m_Value = "%";
+
+	KeyWords[15].m_Key = Keys::Operator;
+	KeyWords[15].m_Value = "&&";
+
+	KeyWords[16].m_Key = Keys::Operator;
+	KeyWords[16].m_Value = "||";
+
+	KeyWords[17].m_Key = Keys::Operator;
+	KeyWords[17].m_Value = "==";
+
+	KeyWords[18].m_Key = Keys::Operator;
+	KeyWords[18].m_Value = "<";
+
+	KeyWords[19].m_Key = Keys::Operator;
+	KeyWords[19].m_Value = ">";
+
+	KeyWords[20].m_Key = Keys::Operator;
+	KeyWords[20].m_Value = "<=";
+
+	KeyWords[21].m_Key = Keys::Operator;
+	KeyWords[21].m_Value = ">=";
+
+	KeyWords[22].m_Key = Keys::Operator;
+	KeyWords[22].m_Value = "!=";
+
+	KeyWords[23].m_Key = Keys::Operator;
+	KeyWords[23].m_Value = "=";
+	
+
 }
 
 void LexcialAnalyzer::fn_GetKeyWords(std::string currentLine) const
@@ -99,5 +139,15 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 
 void LexcialAnalyzer::CheckValidity() const
 {
+	if (RefusedTokens.size() != 0)
+	{
+		PrintLexError(RefusedTokens.front());
+	}
+	return;
+}
+
+void LexcialAnalyzer::PrintLexError(Token element) const
+{
+	std::cout << "Error! the lexeme " << element.m_Value<<" is invlid.\n";
 	return;
 }
