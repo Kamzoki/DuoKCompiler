@@ -2,16 +2,23 @@
 #include <string>
 #include <list>
 
+class Token {
+public:
+	Keys m_Key;
+	std::string m_Value;
+};
+
 enum class Keys {
 	Reserved,
-	Identifire,
+	Identifier,
 	Variable,
 	Constant,
 	OpenCurlyBracket,
 	ClosedCurlyBracket,
 	OpenParentheses,
 	ClosedParentheses,
-	SemiColon
+	SemiColon,
+	Operator,
 };
 class LexcialAnalyzer
 {
@@ -37,8 +44,3 @@ private:
 
 };
 
-class Token {
-public:
-	Keys m_Key;
-	std::string m_Value;
-};
