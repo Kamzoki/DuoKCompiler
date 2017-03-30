@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "LexcialAnalyzer.h"
 
-
+Token::Token(Keys key, std::string value) {
+	m_Key = key;
+	m_Value = value;
+}
 LexcialAnalyzer::LexcialAnalyzer(){
 	//Initialaizing predefined keywords and their tags.
 	
@@ -94,9 +97,16 @@ LexcialAnalyzer::LexcialAnalyzer(){
 
 void LexcialAnalyzer::fn_GetKeyWords(std::string currentLine) const
 {
+	return;
+}
+
+void LexcialAnalyzer::fn_GetNonKeyWords(std::string currentLine) const
+{
 	// Begins with _ or Letter .... No Speical character
-	
+
 	std::list <char> currentLexem;
+	bool validLexem = true;
+
 	if (currentLexem.size() > 0)
 	{
 		currentLexem.clear();
@@ -106,29 +116,48 @@ void LexcialAnalyzer::fn_GetKeyWords(std::string currentLine) const
 	{
 		if (i == 0)
 		{
-			if (currentLine[i] == '_' || (currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <='Z'))
+			if (currentLine[i] == ' ')
 			{
-				Token newToken(Keys::Identifier, );
-				AcceptedTokens.push_back ()
+				continue;
 			}
-			else
+			else if (!(currentLine[i] == '_' || (currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z')))
 			{
-				
+				validLexem = false;
 			}
 		}
 		else
 		{
-			if ((currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z') || (currentLine[i] >= '0' && currentLine[i] <='9'))
+			if (currentLine[i] == ' ')
 			{
-				tokenTracker++;
+				std::string newLexem = std::string();
+				for (int j = 0; j < currentLexem.size(); j++)
+				{
+					newLexem += currentLine[j];
+				}
+				currentLexem.clear();
+				if (validLexem == true)
+				{
+					Token newToken(Keys::Identifier, newLexem);
+					AcceptedTokens.insert(newToken);
+					if (i == currentLine.length - 1)
+					{
+						fn_CheckValidity();
+					}
+				}
+				else if (validLexem == false)
+				{
+					RefusedLexem = newLexem;
+					fn_CheckValidity();
+					return;
+				}
+			}
+			else if (!((currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z') || (currentLine[i] >= '0' && currentLine[i] <= '9')))
+			{
+				validLexem = false;
 			}
 		}
+		currentLexem.push_front(currentLine[i]);
 	}
-	return;
-}
-
-void LexcialAnalyzer::fn_GetNonKeyWords(std::string currentLine) const
-{
 	return;
 }
 
@@ -137,17 +166,20 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 	return;
 }
 
-void LexcialAnalyzer::CheckValidity() const
+void LexcialAnalyzer::fn_CheckValidity() const
 {
-	if (RefusedTokens.size() != 0)
+	if (RefusedLexem.length != 0)
 	{
-		PrintLexError(RefusedTokens.front());
+		fn_PrintLexError();
+	}
+	else {
+		fn_PrintAcceptedTokens();
 	}
 	return;
 }
 
-void LexcialAnalyzer::PrintLexError(Token element) const
+void LexcialAnalyzer::fn_PrintLexError() const
 {
-	std::cout << "Error! the lexeme " << element.m_Value<<" is invlid.\n";
+	std::cout << "Error! the lexeme " << RefusedLexem <<" is invlid.\n";
 	return;
 }

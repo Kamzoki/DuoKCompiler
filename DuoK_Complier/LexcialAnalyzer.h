@@ -23,10 +23,6 @@ public:
 	std::string m_Value;
 };
 
-Token::Token(Keys key, std::string value) {
-	m_Key = key;
-	m_Value = value;
-}
 class LexcialAnalyzer
 {
 public:
@@ -41,15 +37,15 @@ public:
 	// CheckValidity function checks if refused tokens list is clear ... else, it wil print out a lexical analyzer error.
 	void CheckValidity() const;
 	//PrintLexError print lexical analyser error message
-	void PrintLexError(Token element) const;
+	void PrintLexError() const;
 
 private:
 	//Holds all predefines language reserved words
 	Token KeyWords[24];
 	//Holds all accpeted/valid tokens
 	std::list <Token> AcceptedTokens;
-	//Holds all refused/invalid tokens
-	std::list <Token> RefusedTokens;
+	//Holds a refused/invalid tokens
+    std::string RefusedLexem = "";
 
 };
 
