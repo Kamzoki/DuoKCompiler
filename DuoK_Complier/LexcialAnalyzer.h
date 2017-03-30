@@ -2,12 +2,6 @@
 #include <string>
 #include <list>
 
-class Token {
-public:
-	Keys m_Key;
-	std::string m_Value;
-};
-
 enum class Keys {
 	Reserved,
 	Identifier,
@@ -20,6 +14,13 @@ enum class Keys {
 	SemiColon,
 	Operator,
 };
+
+class Token {
+public:
+	Keys m_Key;
+	std::string m_Value;
+};
+
 class LexcialAnalyzer
 {
 public:
@@ -36,7 +37,7 @@ public:
 
 private:
 	//Holds all predefines language reserved words
-	Token KeyWords[10];
+	Token KeyWords[24];
 	//Holds all accpeted/valid tokens
 	std::list <Token> AcceptedTokens;
 	//Holds all refused/invalid tokens

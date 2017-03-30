@@ -45,6 +45,10 @@ LexcialAnalyzer::LexcialAnalyzer(){
 	KeyWords[9].m_Key = Keys::ClosedCurlyBracket;
 	KeyWords[9].m_Value = "}";
 
+	//Operator keyword
+	// TODO add all operators and make sure their keys are Operator
+	KeyWords[10].m_Key = Keys::Operator;
+	KeyWords[10].m_Value = 
 	return;
 }
 
