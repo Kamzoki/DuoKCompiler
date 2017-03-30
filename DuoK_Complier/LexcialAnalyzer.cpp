@@ -48,7 +48,7 @@ LexcialAnalyzer::LexcialAnalyzer(){
 	//Operator keyword
 	// TODO add all operators and make sure their keys are Operator
 	KeyWords[10].m_Key = Keys::Operator;
-	KeyWords[10].m_Value = 
+	KeyWords[10].m_Value = "+";
 	return;
 }
 
