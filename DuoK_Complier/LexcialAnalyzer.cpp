@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "LexcialAnalyzer.h"
 
-Token::Token(Keys key, std::string value) {
+/*Token::Token(Keys key, std::string value) {
 	m_Key = key;
 	m_Value = value;
-}
+}*/
 LexcialAnalyzer::LexcialAnalyzer(){
 	//Initialaizing predefined keywords and their tags.
 	
@@ -95,68 +95,69 @@ LexcialAnalyzer::LexcialAnalyzer(){
 
 }
 
-void LexcialAnalyzer::fn_GetKeyWords(std::string currentLine) const
+void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
 {
-	return;
-}
-
-void LexcialAnalyzer::fn_GetNonKeyWords(std::string currentLine) const
-{
-	// Begins with _ or Letter .... No Speical character
-
-	std::list <char> currentLexem;
-	bool validLexem = true;
-
-	if (currentLexem.size() > 0)
+	//This function toknize lexems, and check if they are a keyword, an identifier, or a value.
+	int j = 0;
+	for (int i = 0; i < currentLine.length(); i=j+1)
 	{
-		currentLexem.clear();
-	}
-
-	for (int i = 0; i < currentLine.length(); i++)
-	{
-		if (i == 0)
-		{
 			if (currentLine[i] == ' ')
 			{
-				continue;
+				i++;
+				if (!(currentLine[i] == '_' || (currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z')))
+				{
+					fn_PrintLexError();
+					break;
+				}
 			}
-			else if (!(currentLine[i] == '_' || (currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z')))
-			{
-				validLexem = false;
-			}
-		}
+
 		else
 		{
-			if (currentLine[i] == ' ')
+			bool foundLexem = false;
+			int j = i;
+			std::string newLexem = "";
+			while (foundLexem == false)
 			{
-				std::string newLexem = std::string();
-				for (int j = 0; j < currentLexem.size(); j++)
+				newLexem += std::string() + currentLine[j];
+				if (currentLine[j+1] == ' ')
 				{
-					newLexem += currentLine[j];
-				}
-				currentLexem.clear();
-				if (validLexem == true)
-				{
-					Token newToken(Keys::Identifier, newLexem);
-					AcceptedTokens.insert(newToken);
-					if (i == currentLine.length - 1)
+					Token newToken;
+					newToken.m_Value = newLexem;
+					for (int k = 0; k < 24; k++)
 					{
-						fn_CheckValidity();
+						if (newToken.m_Value == KeyWords[k].m_Value)
+						{
+							newToken.m_Key = KeyWords[k].m_Key;
+							foundLexem = true;
+							
+						}
 					}
+					if (foundLexem == false)
+					{
+						newToken.m_Key = Keys::Identifier;
+						bool isDigit = false;
+						int h = 0;
+						for (int l = 0; l < newLexem.length; l++)
+						{
+							if (newLexem[l] >= '0' && newLexem[l] <= '9')
+							{
+								h++;
+								if (l == newLexem.length -1 && h == l)
+								{
+									isDigit = true;
+								}
+							}
+						}
+						if (isDigit == true)
+						{
+							newToken.m_Key = Keys::Value;
+						}
+						foundLexem = true;
+					}
+					AcceptedTokens.push_front(newToken);
 				}
-				else if (validLexem == false)
-				{
-					RefusedLexem = newLexem;
-					fn_CheckValidity();
-					return;
-				}
-			}
-			else if (!((currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z') || (currentLine[i] >= '0' && currentLine[i] <= '9')))
-			{
-				validLexem = false;
 			}
 		}
-		currentLexem.push_front(currentLine[i]);
 	}
 	return;
 }
@@ -166,20 +167,8 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 	return;
 }
 
-void LexcialAnalyzer::fn_CheckValidity() const
-{
-	if (RefusedLexem.length != 0)
-	{
-		fn_PrintLexError();
-	}
-	else {
-		fn_PrintAcceptedTokens();
-	}
-	return;
-}
-
 void LexcialAnalyzer::fn_PrintLexError() const
 {
-	std::cout << "Error! the lexeme " << RefusedLexem <<" is invlid.\n";
+	std::cout <<"Lexical Error! /n Fix your shit, BITCH!";
 	return;
 }
