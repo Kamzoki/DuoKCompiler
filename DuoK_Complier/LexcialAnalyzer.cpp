@@ -154,7 +154,7 @@ void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
 						}
 						foundLexem = true;
 					}
-					AcceptedTokens.push_front(newToken);
+					AcceptedTokens.push_back(newToken);
 				}
 			}
 		}
@@ -164,11 +164,18 @@ void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
 
 void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 {
+	if (AcceptedTokens.size != 0)
+	{
+		for (int i = 0; i < AcceptedTokens.size; i++)
+		{
+			std::cout << "Token" <<i<< ": " << AcceptedTokens[i].m_Value << std::endl;
+		}
+	}
 	return;
 }
 
 void LexcialAnalyzer::fn_PrintLexError() const
 {
-	std::cout <<"Lexical Error! /n Fix your shit, BITCH!";
+	std::cout <<"Lexical Error! \n Fix your shit, BITCH!";
 	return;
 }

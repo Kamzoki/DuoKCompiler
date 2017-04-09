@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include <vector>
 
 enum class Keys {
 	Reserved,
@@ -40,7 +41,7 @@ private:
 	//Holds all predefines language reserved words
 	Token KeyWords[24];
 	//Holds all accpeted/valid tokens
-	std::list <Token> AcceptedTokens;
+	std::vector <Token> AcceptedTokens;
 	//Holds a refused/invalid tokens
     std::string RefusedLexem = "";
 
