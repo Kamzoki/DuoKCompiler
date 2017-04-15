@@ -1,4 +1,4 @@
 if ==(personage <=18&&personanimeTaste==YuriOnIce)
 {
-personanimeTaste = SHIT ;
+personanimeTaste = Bad ;
 }
