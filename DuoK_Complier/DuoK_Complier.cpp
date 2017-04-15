@@ -13,10 +13,12 @@ LexcialAnalyzer LexAnl;
 
 //Prototypes
 void ReadSourceCode();
+void PrintResult();
 
 int main()
 {
 	ReadSourceCode();
+	PrintResult();
     return 0;
 }
 
@@ -39,12 +41,17 @@ void ReadSourceCode()
 				codeText += lineBuffer;
 			}
 			lineIndex++;
-			LexAnl.fn_CheckLexems(codeText);
 		}
 		file.close();
+		LexAnl.fn_Toknize(codeText);
 	}
 	else {
 		std::cout << "There is some error.\n Make sure your code is saved in a file called Source Code.txt. \n Make sure your Source Code.txt has been saved in the same folder of the \n compiler project." << std::endl;
 	}
+	return;
+}
+
+void PrintResult() {
+	LexAnl.fn_PrintAcceptedTokens();
 	return;
 }

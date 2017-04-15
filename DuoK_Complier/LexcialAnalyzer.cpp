@@ -21,11 +21,11 @@ LexcialAnalyzer::LexcialAnalyzer(){
 	KeyWords[2].m_Value = "char";
 
 	//If keyword
-	KeyWords[3].m_Key = Keys::Reserved;
+	KeyWords[3].m_Key = Keys::ReservedS;
 	KeyWords[3].m_Value = "if";
 
 	//for keyword
-	KeyWords[4].m_Key = Keys::Reserved;
+	KeyWords[4].m_Key = Keys::ReservedS;
 	KeyWords[4].m_Value = "for";
 
 	//semicolon keyword
@@ -94,77 +94,152 @@ LexcialAnalyzer::LexcialAnalyzer(){
 
 }
 
-void LexcialAnalyzer::fn_CategorizeLexem(std::string currentLine)
+void LexcialAnalyzer::fn_CategorizeLexeme(std::string lexeme)
 {
 	//This function Categorzie lexems.
-	/*int j = 0;
-	for (int i = 0; i < currentLine.length(); i=j+1)
-	{
-			if (currentLine[i] == ' ')
-			{
-				i++;
-				if (!(currentLine[i] == '_' || (currentLine[i] >= 'a' && currentLine[i] <= 'z') || (currentLine[i] >= 'A' && currentLine[i] <= 'Z')))
-				{
-					fn_PrintLexError();
-					break;
-				}
-			}
 
-		else
+	Token newToken;
+	newToken.m_Value = lexeme;
+	
+	//Search if the given lexeme is a keyword, if yes, intilize it's key, and add it to the accepted tokens and then exit the funciton.
+	for (int i = 0; i < 23; i++)
+	{
+		if (lexeme == KeyWords[i].m_Value)
 		{
-			bool foundLexem = false;
-			int j = i;
-			std::string newLexem = "";
-			while (foundLexem == false)
-			{
-				newLexem += std::string() + currentLine[j];
-				if (currentLine[j+1] == ' ')
-				{
-					Token newToken;
-					newToken.m_Value = newLexem;
-					for (int k = 0; k < 24; k++)
-					{
-						if (newToken.m_Value == KeyWords[k].m_Value)
-						{
-							newToken.m_Key = KeyWords[k].m_Key;
-							foundLexem = true;
-						}
-					}
-					if (foundLexem == false)
-					{
-						newToken.m_Key = Keys::Identifier;
-						bool isDigit = false;
-						int h = 0;
-						for (int l = 0; l < newLexem.length(); l++)
-						{
-							if (newLexem[l] >= '0' && newLexem[l] <= '9')
-							{
-								h++;
-								if (l == newLexem.length() -1 && h == l)
-								{
-									isDigit = true;
-								}
-							}
-						}
-						if (isDigit == true)
-						{
-							newToken.m_Key = Keys::Value;
-						}
-						foundLexem = true;
-					}
-					//std::cout << newToken.m_Value << std::endl;
-					AcceptedTokens.push_back(newToken);
-				}
-			}
+			newToken.m_Key = KeyWords[i].m_Key;
+			AcceptedTokens.push_back(newToken);
+			return;
 		}
 	}
-	fn_PrintAcceptedTokens();*/
+
+	//If search for keywords fails, start checking if the given lexeme is a digit, if yes make it's key = Value, else, make it's key = Identifier and then exit the function
+	int DigitLexemeIndex = 0;
+	for (int i = 0; i < lexeme.length(); i++)
+	{
+		if (lexeme[i] >= '0' && lexeme[i] <= '9')
+		{
+			DigitLexemeIndex++;
+		}
+	}
+	if (DigitLexemeIndex == lexeme.length())
+	{
+		newToken.m_Key = Keys::Value;
+	}
+	else {
+		newToken.m_Key = Keys::Identifier;
+	}
+	AcceptedTokens.push_back(newToken);
 	return;
 }
 
 void LexcialAnalyzer::fn_Toknize(std::string sourceCode)
 {
-
+	char charBuffer;
+	std::string lexemeBuffer = "";
+	for (int i = 0; i < sourceCode.length(); i++)
+	{
+		if (sourceCode[i] != ' ')
+		{
+			charBuffer = sourceCode[i];
+			if ((charBuffer >= 'a' && charBuffer <= 'z') || (charBuffer >='A' && charBuffer <= 'Z') || (charBuffer >= '0' && charBuffer <= '9'))
+			{
+				lexemeBuffer += std::string() + charBuffer;
+			}
+			else
+			{
+				fn_CategorizeLexeme(lexemeBuffer);
+				lexemeBuffer = "";
+				switch (charBuffer)
+				{
+				case '<':
+					if (sourceCode[i+1]=='='){
+					lexemeBuffer +=std::string()+charBuffer+sourceCode[i+1];
+					fn_CategorizeLexeme(lexemeBuffer);
+					lexemeBuffer = "";
+					i++;
+					}
+					else
+					{
+						lexemeBuffer += std::string() + charBuffer;
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+					}
+					break;
+				case '=':
+					if (sourceCode[i + 1] == '=') {
+						lexemeBuffer += std::string() + charBuffer + sourceCode[i + 1];
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+						i++;
+					}
+					else
+					{
+						lexemeBuffer += std::string() + charBuffer;
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+					}
+					break;
+				case '!':
+					if (sourceCode[i + 1] == '=') {
+						lexemeBuffer += std::string() + charBuffer + sourceCode[i + 1];
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+						i++;
+					}
+					else
+					{
+						lexemeBuffer += std::string() + charBuffer;
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+					}
+					break;
+				case '>':
+					if (sourceCode[i + 1] == '=') {
+						lexemeBuffer += std::string() + charBuffer + sourceCode[i + 1];
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+						i++;
+					}
+					else
+					{
+						lexemeBuffer += std::string() + charBuffer;
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+					}
+					break;
+				case '&':
+					if (sourceCode[i + 1] == '&') {
+					lexemeBuffer += std::string() + charBuffer + sourceCode[i + 1];
+					fn_CategorizeLexeme(lexemeBuffer);
+					lexemeBuffer = "";
+					i++;
+				}
+						 else
+						 {
+							 fn_PrintLexError();
+						 }
+					break;
+				case '|':
+					if (sourceCode[i + 1] == '|') {
+						lexemeBuffer += std::string() + charBuffer + sourceCode[i + 1];
+						fn_CategorizeLexeme(lexemeBuffer);
+						lexemeBuffer = "";
+						i++;
+					}
+					else
+					{
+						fn_PrintLexError();
+					}
+					break;
+				default:
+					lexemeBuffer += std::string() + charBuffer;
+					fn_CategorizeLexeme(lexemeBuffer);
+					lexemeBuffer = "";
+					break;
+				}
+			}
+		}
+	}
 	return;
 }
 
@@ -172,16 +247,53 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 {
 	if (AcceptedTokens.size() != 0)
 	{
+		std::string theKey = "";
 		for (int i = 0; i < AcceptedTokens.size(); i++)
 		{
-			std::cout << "Token" <<i<< ": " << AcceptedTokens[i].m_Value << std::endl;
+			switch (AcceptedTokens[i].m_Key)
+			{
+			case Keys::Reserved:
+				theKey = "Reserved";
+				break;
+			case Keys::ReservedS:
+				theKey = "Reserved Special";
+				break;
+			case Keys::Value:
+				theKey = "Some Value";
+				break;
+			case Keys::Identifier:
+				theKey = "Identifier";
+				break;
+			case Keys::OpenCurlyBracket:
+				theKey = "OpenCurlyBracket";
+				break;
+			case Keys::ClosedCurlyBracket:
+				theKey = "ClosedCurlyBracket";
+				break;
+			case Keys::OpenParentheses:
+				theKey = "OpenParentheses";
+				break;
+			case Keys::ClosedParentheses:
+				theKey = "ClosedParentheses";
+				break;
+			case Keys::SemiColon:
+				theKey = "SemiColon";
+				break;
+			case Keys::Operator:
+				theKey = "Operator";
+				break;
+			}
+			std::cout << "Token" <<i<< ":- \n" <<"Key: " << theKey << " Value: " << AcceptedTokens[i].m_Value << std::endl;
 		}
+	}
+	else {
+		fn_PrintLexError();
 	}
 	return;
 }
 
 void LexcialAnalyzer::fn_PrintLexError() const
 {
-	std::cout <<"Lexical Error! \n Fix your shit, BITCH!";
+	std::cout <<"Lexical Error! \n invalid lexeme!\n";
 	return;
 }

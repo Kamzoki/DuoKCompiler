@@ -1,3 +1,4 @@
-Jojo's is a fucking
-piece of art ... 
-IF YOU SUCK!
+if ==(personage <=18&&personanimeTaste==YuriOnIce)
+{
+personanimeTaste = SHIT ;
+}
