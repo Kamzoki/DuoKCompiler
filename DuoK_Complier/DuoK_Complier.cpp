@@ -5,9 +5,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "LexcialAnalyzer.h"
 
 //Variables
 std::string codeText = "";
+LexcialAnalyzer LexAnl;
+
 //Prototypes
 void ReadSourceCode();
 
@@ -19,14 +22,24 @@ int main()
 
 void ReadSourceCode()
 {
+	std::string lineBuffer;
 	std::ifstream file("E:/Study/4th Year second semester/Compiler/Project/DuoK_Complier/Source Code.txt", std::ios::in);
-	std::string codeText = "";
 	if (file.is_open() == true)
 	{
-		while (getline(file, codeText))
+		std::cout << "Lexical Anlyzer output: - \n";
+		int lineIndex = 0;
+		while (getline(file, lineBuffer))
 		{
 			// Call Lexical Analyzer
-			std::cout << codeText<< std::endl;
+			if (lineIndex != 0)
+			{
+				codeText += " " + lineBuffer;
+			}
+			else {
+				codeText += lineBuffer;
+			}
+			lineIndex++;
+			LexAnl.fn_CheckLexems(codeText);
 		}
 		file.close();
 	}

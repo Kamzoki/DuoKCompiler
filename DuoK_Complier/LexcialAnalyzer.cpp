@@ -49,7 +49,6 @@ LexcialAnalyzer::LexcialAnalyzer(){
 	KeyWords[9].m_Value = "}";
 
 	//Operator keyword
-	// TODO add all operators and make sure their keys are Operator
 	KeyWords[10].m_Key = Keys::Operator;
 	KeyWords[10].m_Value = "+";
 
@@ -95,10 +94,10 @@ LexcialAnalyzer::LexcialAnalyzer(){
 
 }
 
-void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
+void LexcialAnalyzer::fn_CategorizeLexem(std::string currentLine)
 {
-	//This function toknize lexems, and check if they are a keyword, an identifier, or a value.
-	int j = 0;
+	//This function Categorzie lexems.
+	/*int j = 0;
 	for (int i = 0; i < currentLine.length(); i=j+1)
 	{
 			if (currentLine[i] == ' ')
@@ -129,7 +128,6 @@ void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
 						{
 							newToken.m_Key = KeyWords[k].m_Key;
 							foundLexem = true;
-							
 						}
 					}
 					if (foundLexem == false)
@@ -137,12 +135,12 @@ void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
 						newToken.m_Key = Keys::Identifier;
 						bool isDigit = false;
 						int h = 0;
-						for (int l = 0; l < newLexem.length; l++)
+						for (int l = 0; l < newLexem.length(); l++)
 						{
 							if (newLexem[l] >= '0' && newLexem[l] <= '9')
 							{
 								h++;
-								if (l == newLexem.length -1 && h == l)
+								if (l == newLexem.length() -1 && h == l)
 								{
 									isDigit = true;
 								}
@@ -154,19 +152,27 @@ void LexcialAnalyzer::fn_CheckLexems(std::string currentLine)
 						}
 						foundLexem = true;
 					}
+					//std::cout << newToken.m_Value << std::endl;
 					AcceptedTokens.push_back(newToken);
 				}
 			}
 		}
 	}
+	fn_PrintAcceptedTokens();*/
+	return;
+}
+
+void LexcialAnalyzer::fn_Toknize(std::string sourceCode)
+{
+
 	return;
 }
 
 void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 {
-	if (AcceptedTokens.size != 0)
+	if (AcceptedTokens.size() != 0)
 	{
-		for (int i = 0; i < AcceptedTokens.size; i++)
+		for (int i = 0; i < AcceptedTokens.size(); i++)
 		{
 			std::cout << "Token" <<i<< ": " << AcceptedTokens[i].m_Value << std::endl;
 		}
