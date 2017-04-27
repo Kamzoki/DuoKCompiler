@@ -101,6 +101,14 @@ void SyntaxAnalyzer::fn_PrintError() const
 
 void SyntaxAnalyzer::fn_PopArc(Keys arc)
 {
+	//This function simulates the pop behavior but on a spacific index.
+	for (int i = 0; i < openArcs.size(); i++)
+	{
+		if (arc == openArcs[i])
+		{
+			openArcs.erase(openArcs.begin() + i);
+		}
+	}
 	return;
 }
 
