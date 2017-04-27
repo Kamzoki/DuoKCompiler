@@ -134,23 +134,33 @@ void LexcialAnalyzer::fn_CategorizeLexeme(std::string lexeme)
 
 void LexcialAnalyzer::fn_Toknize(std::string sourceCode)
 {
+	//This Funciton tokenize the given source code and get rid of white spaces.
+
 	char charBuffer;
 	std::string lexemeBuffer = "";
+
+	//This loops through the source code char by char
 	for (int i = 0; i < sourceCode.length(); i++)
 	{
 		if (sourceCode[i] != ' ')
-		{
+		{ //If the char isn't a white space, begin toknization.
+
 			charBuffer = sourceCode[i];
+			//Checking if the character is alphanumaric, if yes, add it to the current lexemBuffer, if not, check if it's a special character.
 			if ((charBuffer >= 'a' && charBuffer <= 'z') || (charBuffer >='A' && charBuffer <= 'Z') || (charBuffer >= '0' && charBuffer <= '9'))
 			{
 				lexemeBuffer += std::string() + charBuffer;
 			}
 			else
 			{
+				/*Sending the current string in the lexemBuffer to be categorized and clear lexemBuffer. 
+				Then, check if the special character has the ability for another special character coming after it.*/
 				fn_CategorizeLexeme(lexemeBuffer);
 				lexemeBuffer = "";
 				switch (charBuffer)
 				{
+					/*Switch on all special characters. in case of a special special character add it and the char after it, increase the char index. In all cases, add special characters
+					to lexemBuffer, send it to be Categorized then clear lexemBuffer for the next lexem.*/
 				case '<':
 					if (sourceCode[i+1]=='='){
 					lexemeBuffer +=std::string()+charBuffer+sourceCode[i+1];
@@ -248,8 +258,10 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 	if (AcceptedTokens.size() != 0)
 	{
 		std::string theKey = "";
+		//This Loop prints each accepted token with its details.
 		for (int i = 0; i < AcceptedTokens.size(); i++)
 		{
+			//Manual custom ToString behavior implementation to transform Key variable into a string.
 			switch (AcceptedTokens[i].m_Key)
 			{
 			case Keys::Reserved:
