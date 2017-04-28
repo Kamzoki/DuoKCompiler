@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "SyntaxAnalyzer.h"
 
-
-SyntaxAnalyzer::SyntaxAnalyzer()
-{
-}
-
-
-SyntaxAnalyzer::~SyntaxAnalyzer()
-{
-}
+/*
+Grammar:-
+S-> Keyword ID
+Exp -> OP|ID|Value|ID OP|OP Value|OP Value
+OP -> =|!=|>|<|<=|>=|-|+|*|/|==|&&||||;
+Keyword -> Reserved|ReservedS
+Reserved -> string|char|number
+ReservedS-> if|for
+*/
 
 void SyntaxAnalyzer::fn_CheckSyntax(std::vector<Token>& AT)
 {

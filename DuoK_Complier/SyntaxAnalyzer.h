@@ -6,8 +6,6 @@
 class SyntaxAnalyzer
 {
 public:
-	SyntaxAnalyzer();
-	~SyntaxAnalyzer();
 	//This function checks the syntax according to the grammar.
 	void fn_CheckSyntax(std::vector<Token> &AT);
 private:
