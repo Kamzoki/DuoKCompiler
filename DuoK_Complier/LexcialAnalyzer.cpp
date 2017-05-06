@@ -297,6 +297,9 @@ void LexcialAnalyzer::fn_PrintAcceptedTokens() const
 			}
 			std::cout << "Token" <<i<< ":- \n" <<"Key: " << theKey << " Value: " << AcceptedTokens[i].m_Value << std::endl;
 		}
+		SyntaxAnalyzer SA;
+		SA.AT = AcceptedTokens;
+		SA.fn_CheckSyntax();
 	}
 	else {
 		fn_PrintLexError();

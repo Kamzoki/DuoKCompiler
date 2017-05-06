@@ -11,7 +11,7 @@ Reserved -> string|char|number
 ReservedS-> if|for
 */
 
-void SyntaxAnalyzer::fn_CheckSyntax(std::vector<Token>& AT)
+void SyntaxAnalyzer::fn_CheckSyntax()
 {
 	for (int i = 0; i < AT.size(); i++)
 	{
@@ -26,6 +26,8 @@ void SyntaxAnalyzer::fn_CheckSyntax(std::vector<Token>& AT)
 				fn_PrintError();
 			}
 		}
+		if (i != AT.size() - 1)
+		{
 			switch (AT[i].m_Key)
 			{
 				//This is the grammar.
@@ -33,59 +35,60 @@ void SyntaxAnalyzer::fn_CheckSyntax(std::vector<Token>& AT)
 				Then clear the nextStatus vector and reassign with the new keys that should follow up the current key as the grammar specifies.*/
 
 			case Keys::SemiColon:
-				fn_CheckCurrentStatus(Keys::SemiColon);
+				fn_CheckCurrentStatus(Keys::SemiColon, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Reserved); nextStatus.push_back(Keys::ReservedS); nextStatus.push_back(Keys::ClosedCurlyBracket);
 				break;
 			case Keys::Reserved:
-				fn_CheckCurrentStatus(Keys::Reserved);
+				fn_CheckCurrentStatus(Keys::Reserved, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Identifier);
 				break;
 			case Keys::ReservedS:
-				fn_CheckCurrentStatus(Keys::ReservedS);
+				fn_CheckCurrentStatus(Keys::ReservedS, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::OpenCurlyBracket); nextStatus.push_back(Keys::OpenParentheses);
 				break;
 			case Keys::Identifier:
-				fn_CheckCurrentStatus(Keys::Identifier);
+				fn_CheckCurrentStatus(Keys::Identifier, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Operator); nextStatus.push_back(Keys::SemiColon); nextStatus.push_back(Keys::ClosedParentheses);
 				break;
 			case Keys::Operator:
-				fn_CheckCurrentStatus(Keys::Operator);
+				fn_CheckCurrentStatus(Keys::Operator, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Identifier); nextStatus.push_back(Keys::Value);
 				break;
 			case Keys::Value:
-				fn_CheckCurrentStatus(Keys::Value);
+				fn_CheckCurrentStatus(Keys::Value, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Operator); nextStatus.push_back(Keys::SemiColon); nextStatus.push_back(Keys::ClosedParentheses);
 				break;
 			case Keys::OpenParentheses:
-				fn_CheckCurrentStatus(Keys::OpenParentheses);
+				fn_CheckCurrentStatus(Keys::OpenParentheses, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Identifier); nextStatus.push_back(Keys::Reserved); nextStatus.push_back(Keys::Value);
 				openArcs.push_back(Keys::OpenParentheses);
 				break;
 			case Keys::OpenCurlyBracket:
-				fn_CheckCurrentStatus(Keys::OpenCurlyBracket);
+				fn_CheckCurrentStatus(Keys::OpenCurlyBracket, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::Reserved); nextStatus.push_back(Keys::ReservedS); nextStatus.push_back(Keys::Identifier);
 				break;
 			case Keys::ClosedParentheses:
-				fn_CheckCurrentStatus(Keys::ClosedParentheses);
+				fn_CheckCurrentStatus(Keys::ClosedParentheses, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::OpenCurlyBracket);
 				fn_PopArc(Keys::OpenParentheses);
 				break;
 			case Keys::ClosedCurlyBracket:
-				fn_CheckCurrentStatus(Keys::ClosedCurlyBracket);
+				fn_CheckCurrentStatus(Keys::ClosedCurlyBracket, AT, i);
 				nextStatus.clear();
 				nextStatus.push_back(Keys::SemiColon);
 				fn_PopArc(Keys::OpenCurlyBracket);
 				break;
 			}
+		}
 	}
 	if (openArcs.empty() == false)
 	{
@@ -96,6 +99,13 @@ void SyntaxAnalyzer::fn_CheckSyntax(std::vector<Token>& AT)
 
 void SyntaxAnalyzer::fn_PrintError() const
 {
+	std::cout << "Go fix your stupid shit, nigger! You're missing an open fucker" << std::endl;
+	return;
+}
+
+void SyntaxAnalyzer::fn_PrintError(std::vector<Token>& AT, int errorIndex) const
+{
+	std::cout <<"Error: "<< /*AT[errorIndex].m_Value <<*/"Syntax is wrong"<< std::endl;
 	return;
 }
 
@@ -112,7 +122,7 @@ void SyntaxAnalyzer::fn_PopArc(Keys arc)
 	return;
 }
 
-void SyntaxAnalyzer::fn_CheckCurrentStatus(Keys status) const
+void SyntaxAnalyzer::fn_CheckCurrentStatus(Keys status, std::vector<Token> &AT, int errorIndex)
 {
 	//This function loops through the nextStatus of the previous key, if it found a match with the passed status, return from funtion. if not, call fn_PrintError
 	if (isFirstStatus == false)
@@ -125,7 +135,7 @@ void SyntaxAnalyzer::fn_CheckCurrentStatus(Keys status) const
 			}
 		}
 
-		fn_PrintError();
+		fn_PrintError(AT, errorIndex);
 	}
 	return;
 }

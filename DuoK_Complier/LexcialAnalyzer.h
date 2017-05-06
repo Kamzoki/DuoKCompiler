@@ -3,8 +3,10 @@
 #include <list>
 #include <iostream>
 #include <vector>
+#include "SyntaxAnalyzer.h"
+#include "Token.h"
 
-enum class Keys {
+/*enum class Keys {
 	Reserved,
 	ReservedS,
 	Identifier,
@@ -15,13 +17,13 @@ enum class Keys {
 	ClosedParentheses,
 	SemiColon,
 	Operator,
-};
+};*/
 
-class Token {
+/*class Token {
 public:
 	Keys m_Key;
 	std::string m_Value;
-};
+};*/
 
 class LexcialAnalyzer
 {
@@ -32,6 +34,7 @@ public:
 	void fn_Toknize(std::string sourceCode);
 	//Temp function for printing out accpeted tokens for testing
 	void fn_PrintAcceptedTokens() const;
+
 
 private:
 	//PrintLexError print lexical analyser error message
